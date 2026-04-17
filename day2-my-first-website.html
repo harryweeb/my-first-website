@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My First Website — Day 2</title>
+
+  <!-- ============================================ -->
+  <!--  CSS SECTION — This controls how things LOOK  -->
+  <!--  TRY CHANGING: colors, sizes, font-family     -->
+  <!-- ============================================ -->
+  <style>
+    /* IMPORT A FONT — try changing to: 'Courier New', 'Georgia', 'Trebuchet MS' */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    /* ---- VARIABLES: Change these to restyle the ENTIRE page ---- */
+    :root {
+      --bg-color: #0a0a0f;          /* TRY: #ffffff for light, #1a0a2e for purple */
+      --text-color: #e4e4e7;        /* TRY: #333333 for dark text on light bg */
+      --accent-color: #10B981;      /* TRY: #F59E0B for amber, #EC4899 for pink, #3B82F6 for blue */
+      --card-bg: #13141a;           /* TRY: #f5f5f5 for light cards */
+      --border-color: #1e1f28;      /* TRY: #e0e0e0 for light borders */
+      --font-main: 'Space Grotesk', sans-serif;
+      --font-code: 'JetBrains Mono', monospace;
+    }
+
+    /* ---- BASE STYLES ---- */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: var(--font-main);
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* ---- HEADER SECTION ---- */
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      background: rgba(16, 185, 129, 0.1);  /* accent with transparency */
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-color);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 42px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 12px;
+      /* TRY adding: text-decoration: underline; */
+      /* TRY adding: font-style: italic; */
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: #71717a;
+      margin-bottom: 48px;
+    }
+
+    /* ---- HIGHLIGHT NAME — try changing the color! ---- */
+    .highlight {
+      color: var(--accent-color);
+      /* TRY adding: background: var(--accent-color); color: black; padding: 0 8px; */
+    }
+
+    /* ---- SECTION CARDS ---- */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 20px;
+      /* TRY adding: transform: rotate(1deg); */
+    }
+
+    .card h2 {
+      font-size: 20px;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #a1a1aa;
+    }
+
+    /* ---- TAG LABELS ---- */
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: var(--font-code);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .tag-html { background: #7c3aed20; color: #a78bfa; border: 1px solid #7c3aed30; }
+    .tag-css  { background: #3b82f620; color: #60a5fa; border: 1px solid #3b82f630; }
+    .tag-js   { background: #f59e0b20; color: #fbbf24; border: 1px solid #f59e0b30; }
+
+    /* ---- SKILLS LIST ---- */
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 32px;
+      margin-bottom: 48px;
+    }
+
+    .skill-item {
+      padding: 10px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 14px;
+      color: #a1a1aa;
+      transition: all 0.2s ease;
+      /* TRY: delete "transition" line, then hover — notice the difference? */
+    }
+
+    .skill-item:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+      transform: translateY(-2px);
+      /* Hover effect! This is CSS-only, no JavaScript needed. */
+    }
+
+    /* ---- CALL-TO-ACTION BUTTON ---- */
+    .cta-button {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--accent-color);
+      color: #000000;
+      font-family: var(--font-main);
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      /* TRY: border-radius: 100px; for a pill shape */
+    }
+
+    .cta-button:hover {
+      opacity: 0.85;
+      transform: scale(1.03);
+    }
+
+    /* ---- COUNTER SECTION (JavaScript-powered) ---- */
+    .counter-section {
+      text-align: center;
+      padding: 40px;
+      margin: 32px 0;
+      border: 1px dashed var(--accent-color);
+      border-radius: 12px;
+    }
+
+    .counter-number {
+      font-size: 64px;
+      font-weight: 700;
+      color: var(--accent-color);
+      font-family: var(--font-code);
+    }
+
+    .counter-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 16px;
+    }
+
+    .counter-btn {
+      padding: 10px 24px;
+      font-size: 18px;
+      font-weight: 700;
+      font-family: var(--font-code);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--card-bg);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .counter-btn:hover {
+      border-color: var(--accent-color);
+    }
+
+    /* ---- FOOTER ---- */
+    .footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-color);
+      color: #3f3f46;
+      font-size: 13px;
+    }
+
+    .footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ============================================ -->
+  <!--  HTML SECTION — This controls WHAT is on      -->
+  <!--  the page. Try changing text, adding elements  -->
+  <!-- ============================================ -->
+  <div class="container">
+
+    <!-- HEADER -->
+    <div class="badge">Day 2 · Learn & Earn</div>
+    <h1>Hi, I'm <span class="highlight">your name
+      
+    </span></h1>
+    <!-- TRY: Change the name above to yours! -->
+    <p class="subtitle">I'm learning to build AI-powered websites. This is my first page, and I understand every line of it.</p>
+
+    <!-- WHAT I'M LEARNING -->
+    <div class="card">
+      <span class="tag tag-html">HTML</span>
+      <h2>Structure</h2>
+      <p>HTML gives the page its skeleton. This card, the heading above, the button below — all HTML elements wrapped in tags.</p>
+    </div>
+
+    <div class="card">
+      <span class="tag tag-css">CSS</span>
+      <h2>Style</h2>
+      <p>CSS makes it beautiful. The dark background, green accents, rounded corners, hover effects — all CSS. Change the --accent-color variable above and watch the entire page transform.</p>
+    </div>
+
+    <div class="card">
+      <span class="tag tag-js">JAVASCRIPT</span>
+      <h2>Behavior</h2>
+      <p>JavaScript makes it interactive. The counter below? That's JS listening for your clicks and updating the number. No page reload needed.</p>
+    </div>
+
+    <!-- SKILLS I'M BUILDING -->
+    <h2 style="color: #ffffff; margin-bottom: 4px;">Skills I'm Building</h2>
+    <p style="color: #52525b; font-size: 14px; margin-bottom: 0;">Hover over each one (that's a CSS effect!)</p>
+    <div class="skills">
+      <!-- TRY: Add more items! Copy a <div class="skill-item"> line and change the text -->
+      <div class="skill-item">HTML & CSS</div>
+      <div class="skill-item">JavaScript</div>
+      <div class="skill-item">React & Next.js</div>
+      <div class="skill-item">Claude Code</div>
+      <div class="skill-item">AI Agents</div>
+      <div class="skill-item">API Integration</div>
+      <div class="skill-item">Prompt Engineering</div>
+      <div class="skill-item">Deployment</div>
+    </div>
+
+    <!-- INTERACTIVE COUNTER — Powered by JavaScript -->
+    <div class="counter-section">
+      <p style="color: #71717a; font-size: 13px; letter-spacing: 2px; margin-bottom: 8px;">JAVASCRIPT-POWERED COUNTER</p>
+      <div class="counter-number" id="counter">0</div>
+      <div class="counter-buttons">
+        <button class="counter-btn" onclick="changeCount(-1)">−</button>
+        <button class="counter-btn" onclick="changeCount(1)">+</button>
+        <button class="counter-btn" onclick="resetCount()">Reset</button>
+      </div>
+      <p style="color: #3f3f46; font-size: 12px; margin-top: 12px;">Each click runs a JavaScript function. Open DevTools (F12) → Console to see it log.</p>
+    </div>
+
+    <!-- CALL TO ACTION -->
+    <div style="text-align: center; margin-top: 40px;">
+      <button class="cta-button" onclick="showMessage()">I Built This! 🚀</button>
+      <p id="message" style="color: var(--accent-color); margin-top: 16px; font-weight: 600; min-height: 24px;"></p>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <p>Built on Day 2 of the Learn & Earn 30-Day Plan</p>
+      <p style="margin-top: 4px;">Next up: <a href="#">Day 3 — React & Components</a></p>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!--  JAVASCRIPT SECTION — This controls BEHAVIOR  -->
+  <!--  Try changing what the functions do!           -->
+  <!-- ============================================ -->
+  <script>
+    // --- COUNTER LOGIC ---
+    let count = 0;
+
+    function changeCount(amount) {
+      count += amount;
+      document.getElementById("counter").textContent = count;
+      console.log("Counter is now:", count); // Open DevTools (F12) to see this!
+    }
+
+    function resetCount() {
+      count = 0;
+      document.getElementById("counter").textContent = count;
+      console.log("Counter reset!");
+    }
+
+    // --- BUTTON MESSAGE ---
+    function showMessage() {
+      const messages = [
+        "You built a real website! HTML + CSS + JS working together. 💪",
+        "Day 2 complete. You understand more than most people ever will.",
+        "This isn't a template — you understand every line. That's power.",
+        "From zero to website builder in 2 days. Keep going! 🔥",
+      ];
+      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+      document.getElementById("message").textContent = randomMessage;
+
+      // TRY: Add your own messages to the array above!
+    }
+
+    // This runs when the page first loads
+    console.log("🟢 Page loaded! JavaScript is running.");
+    console.log("Open this console (F12 → Console tab) to see JS in action.");
+  </script>
+</body>
+</html>
