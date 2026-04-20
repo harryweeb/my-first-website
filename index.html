@@ -1,334 +1,1126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My First Website — Day 2</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harry Builds — AI-powered tools, websites, and automations</title>
+  <meta name="description" content="Independent studio building AI-powered websites, chatbots, and automations for Indian brands and founders. Built fast. Deployed faster." />
 
-  <!-- ============================================ -->
-  <!--  CSS SECTION — This controls how things LOOK  -->
-  <!--  TRY CHANGING: colors, sizes, font-family     -->
-  <!-- ============================================ -->
+  <!-- Fonts: pairing a brutalist display font with a refined mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
   <style>
-    /* IMPORT A FONT — try changing to: 'Courier New', 'Georgia', 'Trebuchet MS' */
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-
-    /* ---- VARIABLES: Change these to restyle the ENTIRE page ---- */
+    /* ============================================
+       BRUTALIST DESIGN TOKENS
+       ============================================ */
     :root {
-      --bg-color: #0a0a0f;          /* TRY: #ffffff for light, #1a0a2e for purple */
-      --text-color: #e4e4e7;        /* TRY: #333333 for dark text on light bg */
-      --accent-color: #10B981;      /* TRY: #F59E0B for amber, #EC4899 for pink, #3B82F6 for blue */
-      --card-bg: #13141a;           /* TRY: #f5f5f5 for light cards */
-      --border-color: #1e1f28;      /* TRY: #e0e0e0 for light borders */
-      --font-main: 'Space Grotesk', sans-serif;
-      --font-code: 'JetBrains Mono', monospace;
+      --ink: #0a0a0a;
+      --paper: #f2f1ec;
+      --paper-dim: #e6e4dc;
+      --accent: #ff3b14;
+      --muted: #6b6b68;
+      --line: #0a0a0a;
+
+      --font-display: "Archivo Black", sans-serif;
+      --font-serif: "Instrument Serif", serif;
+      --font-mono: "JetBrains Mono", monospace;
     }
 
-    /* ---- BASE STYLES ---- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg-color);
-      color: var(--text-color);
-      font-family: var(--font-main);
-      line-height: 1.7;
-      padding: 40px 20px;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.6;
+      overflow-x: hidden;
+      cursor: default;
     }
 
+    /* Noise texture overlay for paper feel */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.6;
+    }
+
+    ::selection { background: var(--accent); color: var(--paper); }
+
+    /* ============================================
+       GRID CONTAINER
+       ============================================ */
     .container {
-      max-width: 700px;
+      max-width: 1400px;
       margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 2;
     }
 
-    /* ---- HEADER SECTION ---- */
-    .badge {
+    @media (max-width: 640px) {
+      .container { padding: 0 20px; }
+    }
+
+    /* ============================================
+       TOP MARQUEE BAR
+       ============================================ */
+    .marquee-bar {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 0;
+      overflow: hidden;
+      border-bottom: 2px solid var(--ink);
+      position: relative;
+      z-index: 10;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 48px;
+      white-space: nowrap;
+      animation: scroll 40s linear infinite;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee-track span {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .marquee-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
       display: inline-block;
-      padding: 4px 14px;
-      background: rgba(16, 185, 129, 0.1);  /* accent with transparency */
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 20px;
+    }
+
+    /* ============================================
+       NAV
+       ============================================ */
+    nav {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--ink);
+      position: sticky;
+      top: 0;
+      background: var(--paper);
+      z-index: 9;
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 24px;
+      height: 24px;
+      background: var(--ink);
+      position: relative;
+      transform: rotate(45deg);
+    }
+
+    .logo-mark::after {
+      content: "";
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: var(--ink);
+      text-decoration: none;
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-contact {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1px;
+      background: var(--ink);
+      color: var(--paper);
+      padding: 10px 18px;
+      border: 2px solid var(--ink);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .nav-contact:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--paper);
+    }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      padding: 80px 0 60px;
+      border-bottom: 1px solid var(--ink);
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
       font-size: 11px;
       font-weight: 700;
-      color: var(--accent-color);
       letter-spacing: 3px;
       text-transform: uppercase;
-      margin-bottom: 16px;
+      margin-bottom: 40px;
+      color: var(--muted);
     }
 
-    h1 {
-      font-size: 42px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.15;
-      margin-bottom: 12px;
-      /* TRY adding: text-decoration: underline; */
-      /* TRY adding: font-style: italic; */
+    .hero-label::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--muted);
     }
 
-    .subtitle {
-      font-size: 16px;
-      color: #71717a;
-      margin-bottom: 48px;
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 11vw, 156px);
+      line-height: 0.86;
+      letter-spacing: -4px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+      font-weight: 900;
     }
 
-    /* ---- HIGHLIGHT NAME — try changing the color! ---- */
-    .highlight {
-      color: var(--accent-color);
-      /* TRY adding: background: var(--accent-color); color: black; padding: 0 8px; */
+    .hero h1 .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -2px;
+      color: var(--accent);
     }
 
-    /* ---- SECTION CARDS ---- */
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 20px;
-      /* TRY adding: transform: rotate(1deg); */
+    .hero h1 .outlined {
+      -webkit-text-stroke: 2px var(--ink);
+      color: transparent;
     }
 
-    .card h2 {
-      font-size: 20px;
-      color: #ffffff;
-      margin-bottom: 8px;
+    .hero-sub {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 56px;
+      padding-top: 32px;
+      border-top: 1px solid var(--ink);
     }
 
-    .card p {
+    @media (max-width: 720px) {
+      .hero-sub { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    .hero-sub p {
+      font-family: var(--font-mono);
       font-size: 15px;
-      color: #a1a1aa;
+      line-height: 1.65;
+      color: var(--ink);
     }
 
-    /* ---- TAG LABELS ---- */
-    .tag {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 4px;
-      font-family: var(--font-code);
+    .hero-sub p .muted {
+      color: var(--muted);
+    }
+
+    .hero-cta-row {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 26px;
+      font-family: var(--font-mono);
       font-size: 12px;
       font-weight: 700;
-      margin-bottom: 12px;
-    }
-
-    .tag-html { background: #7c3aed20; color: #a78bfa; border: 1px solid #7c3aed30; }
-    .tag-css  { background: #3b82f620; color: #60a5fa; border: 1px solid #3b82f630; }
-    .tag-js   { background: #f59e0b20; color: #fbbf24; border: 1px solid #f59e0b30; }
-
-    /* ---- SKILLS LIST ---- */
-    .skills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 32px;
-      margin-bottom: 48px;
-    }
-
-    .skill-item {
-      padding: 10px 18px;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      font-size: 14px;
-      color: #a1a1aa;
-      transition: all 0.2s ease;
-      /* TRY: delete "transition" line, then hover — notice the difference? */
-    }
-
-    .skill-item:hover {
-      border-color: var(--accent-color);
-      color: var(--accent-color);
-      transform: translateY(-2px);
-      /* Hover effect! This is CSS-only, no JavaScript needed. */
-    }
-
-    /* ---- CALL-TO-ACTION BUTTON ---- */
-    .cta-button {
-      display: inline-block;
-      padding: 14px 32px;
-      background: var(--accent-color);
-      color: #000000;
-      font-family: var(--font-main);
-      font-size: 16px;
-      font-weight: 700;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      /* TRY: border-radius: 100px; for a pill shape */
-    }
-
-    .cta-button:hover {
-      opacity: 0.85;
-      transform: scale(1.03);
-    }
-
-    /* ---- COUNTER SECTION (JavaScript-powered) ---- */
-    .counter-section {
-      text-align: center;
-      padding: 40px;
-      margin: 32px 0;
-      border: 1px dashed var(--accent-color);
-      border-radius: 12px;
-    }
-
-    .counter-number {
-      font-size: 64px;
-      font-weight: 700;
-      color: var(--accent-color);
-      font-family: var(--font-code);
-    }
-
-    .counter-buttons {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 16px;
-    }
-
-    .counter-btn {
-      padding: 10px 24px;
-      font-size: 18px;
-      font-weight: 700;
-      font-family: var(--font-code);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      background: var(--card-bg);
-      color: var(--text-color);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 2px solid var(--ink);
       cursor: pointer;
       transition: all 0.15s ease;
     }
 
-    .counter-btn:hover {
-      border-color: var(--accent-color);
+    .btn-primary {
+      background: var(--ink);
+      color: var(--paper);
     }
 
-    /* ---- FOOTER ---- */
-    .footer {
-      text-align: center;
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid var(--border-color);
-      color: #3f3f46;
+    .btn-primary:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translate(-2px, -2px);
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .btn-ghost:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .btn-arrow {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    /* Index/counter badge */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 2px solid var(--ink);
+      margin-top: 60px;
+      background: var(--paper);
+    }
+
+    @media (max-width: 720px) {
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .stat {
+      padding: 24px 20px;
+      border-right: 1px solid var(--ink);
+      background: var(--paper);
+      position: relative;
+    }
+
+    .stat:last-child { border-right: none; }
+
+    @media (max-width: 720px) {
+      .stat { border-bottom: 1px solid var(--ink); }
+      .stat:nth-child(odd) { border-right: 1px solid var(--ink); }
+      .stat:nth-child(even) { border-right: none; }
+      .stat:last-child, .stat:nth-last-child(2) { border-bottom: none; }
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 44px;
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 10px;
+    }
+
+    /* ============================================
+       SECTION HEADERS
+       ============================================ */
+    section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--ink);
+      position: relative;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 7vw, 92px);
+      line-height: 0.92;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      max-width: 900px;
+    }
+
+    .section-title .italic {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -1px;
+      color: var(--accent);
+    }
+
+    /* ============================================
+       SERVICES GRID
+       ============================================ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      border: 2px solid var(--ink);
+    }
+
+    @media (max-width: 720px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+
+    .service {
+      padding: 40px 36px;
+      border-right: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      background: var(--paper);
+      transition: background 0.2s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service:nth-child(even) { border-right: none; }
+    .service:nth-last-child(-n+2) { border-bottom: none; }
+
+    @media (max-width: 720px) {
+      .service { border-right: none !important; border-bottom: 1px solid var(--ink) !important; }
+      .service:last-child { border-bottom: none !important; }
+    }
+
+    .service:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    .service:hover .service-num { color: var(--accent); }
+    .service:hover .service-tag { color: var(--paper); border-color: var(--paper); }
+    .service:hover .service-desc { color: var(--paper-dim); }
+
+    .service-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+
+    .service-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+
+    .service-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      transition: all 0.2s;
+    }
+
+    .service h3 {
+      font-family: var(--font-display);
+      font-size: 32px;
+      line-height: 1;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .service-desc {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .service-list {
+      list-style: none;
+      border-top: 1px dashed currentColor;
+      padding-top: 20px;
+    }
+
+    .service-list li {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      padding: 4px 0;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .service-list li::before {
+      content: "→";
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       PROCESS SECTION
+       ============================================ */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    @media (max-width: 720px) {
+      .process-grid { grid-template-columns: 1fr; }
+    }
+
+    .process-step {
+      padding: 40px 32px;
+      border-right: 1px solid var(--ink);
+      position: relative;
+    }
+
+    .process-step:last-child { border-right: none; }
+
+    @media (max-width: 720px) {
+      .process-step { border-right: none; border-bottom: 1px solid var(--ink); }
+      .process-step:last-child { border-bottom: none; }
+    }
+
+    .step-num {
+      font-family: var(--font-display);
+      font-size: 112px;
+      line-height: 0.9;
+      letter-spacing: -4px;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .process-step h4 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .process-step p {
+      font-family: var(--font-mono);
       font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
     }
 
-    .footer a {
-      color: var(--accent-color);
+    /* ============================================
+       ABOUT SECTION
+       ============================================ */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    @media (max-width: 900px) {
+      .about-split { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .about-left .big-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      color: var(--ink);
+    }
+
+    .about-left .big-quote .accent {
+      color: var(--accent);
+    }
+
+    .about-right .body-copy {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+
+    .about-right .body-copy .muted { color: var(--muted); }
+
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+
+    .tech-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 8px 14px;
+      border: 1px solid var(--ink);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .tech-tag:hover {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    /* ============================================
+       CONTACT SECTION
+       ============================================ */
+    .contact-section {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 120px 0;
+    }
+
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contact-label::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .contact-headline {
+      font-family: var(--font-display);
+      font-size: clamp(44px, 8vw, 104px);
+      line-height: 0.9;
+      letter-spacing: -3px;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    .contact-headline .italic {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -2px;
+      color: var(--accent);
+    }
+
+    .contact-headline .outlined {
+      -webkit-text-stroke: 2px var(--paper);
+      color: transparent;
+    }
+
+    .contact-methods {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--paper);
+    }
+
+    @media (max-width: 720px) {
+      .contact-methods { grid-template-columns: 1fr; }
+    }
+
+    .contact-method {
+      padding: 32px 28px;
+      border-right: 1px solid var(--paper);
       text-decoration: none;
+      color: var(--paper);
+      transition: all 0.2s ease;
+      display: block;
+    }
+
+    .contact-method:last-child { border-right: none; }
+
+    @media (max-width: 720px) {
+      .contact-method { border-right: none; border-bottom: 1px solid var(--paper); }
+      .contact-method:last-child { border-bottom: none; }
+    }
+
+    .contact-method:hover {
+      background: var(--accent);
+      color: var(--paper);
+    }
+
+    .contact-method-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.5;
+      margin-bottom: 12px;
+    }
+
+    .contact-method-value {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: -0.5px;
+      line-height: 1.1;
+      text-transform: uppercase;
+      word-break: break-all;
+    }
+
+    .contact-method-arrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 32px 0;
+      border-top: 1px solid var(--paper);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    .footer-text .accent {
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-label { animation: fadeUp 0.6s ease-out 0.05s both; }
+    .hero h1 { animation: fadeUp 0.8s ease-out 0.1s both; }
+    .hero-sub { animation: fadeUp 0.6s ease-out 0.3s both; }
+    .stat-strip { animation: fadeUp 0.6s ease-out 0.5s both; }
+
+    /* Floating arrows for decoration */
+    .corner-arrow {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-transform: uppercase;
     }
   </style>
 </head>
 
 <body>
-  <!-- ============================================ -->
-  <!--  HTML SECTION — This controls WHAT is on      -->
-  <!--  the page. Try changing text, adding elements  -->
-  <!-- ============================================ -->
-  <div class="container">
 
-    <!-- HEADER -->
-    <div class="badge">Day 2 · Learn & Earn</div>
-    <h1>Hi, I'm <span class="highlight">your name
-      
-    </span></h1>
-    <!-- TRY: Change the name above to yours! -->
-    <p class="subtitle">I'm learning to build AI-powered websites. This is my first page, and I understand every line of it.</p>
-
-    <!-- WHAT I'M LEARNING -->
-    <div class="card">
-      <span class="tag tag-html">HTML</span>
-      <h2>Structure</h2>
-      <p>HTML gives the page its skeleton. This card, the heading above, the button below — all HTML elements wrapped in tags.</p>
-    </div>
-
-    <div class="card">
-      <span class="tag tag-css">CSS</span>
-      <h2>Style</h2>
-      <p>CSS makes it beautiful. The dark background, green accents, rounded corners, hover effects — all CSS. Change the --accent-color variable above and watch the entire page transform.</p>
-    </div>
-
-    <div class="card">
-      <span class="tag tag-js">JAVASCRIPT</span>
-      <h2>Behavior</h2>
-      <p>JavaScript makes it interactive. The counter below? That's JS listening for your clicks and updating the number. No page reload needed.</p>
-    </div>
-
-    <!-- SKILLS I'M BUILDING -->
-    <h2 style="color: #ffffff; margin-bottom: 4px;">Skills I'm Building</h2>
-    <p style="color: #52525b; font-size: 14px; margin-bottom: 0;">Hover over each one (that's a CSS effect!)</p>
-    <div class="skills">
-      <!-- TRY: Add more items! Copy a <div class="skill-item"> line and change the text -->
-      <div class="skill-item">HTML & CSS</div>
-      <div class="skill-item">JavaScript</div>
-      <div class="skill-item">React & Next.js</div>
-      <div class="skill-item">Claude Code</div>
-      <div class="skill-item">AI Agents</div>
-      <div class="skill-item">API Integration</div>
-      <div class="skill-item">Prompt Engineering</div>
-      <div class="skill-item">Deployment</div>
-    </div>
-
-    <!-- INTERACTIVE COUNTER — Powered by JavaScript -->
-    <div class="counter-section">
-      <p style="color: #71717a; font-size: 13px; letter-spacing: 2px; margin-bottom: 8px;">JAVASCRIPT-POWERED COUNTER</p>
-      <div class="counter-number" id="counter">0</div>
-      <div class="counter-buttons">
-        <button class="counter-btn" onclick="changeCount(-1)">−</button>
-        <button class="counter-btn" onclick="changeCount(1)">+</button>
-        <button class="counter-btn" onclick="resetCount()">Reset</button>
-      </div>
-      <p style="color: #3f3f46; font-size: 12px; margin-top: 12px;">Each click runs a JavaScript function. Open DevTools (F12) → Console to see it log.</p>
-    </div>
-
-    <!-- CALL TO ACTION -->
-    <div style="text-align: center; margin-top: 40px;">
-      <button class="cta-button" onclick="showMessage()">I Built This! 🚀</button>
-      <p id="message" style="color: var(--accent-color); margin-top: 16px; font-weight: 600; min-height: 24px;"></p>
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-      <p>Built on Day 2 of the Learn & Earn 30-Day Plan</p>
-      <p style="margin-top: 4px;">Next up: <a href="#">Day 3 — React & Components</a></p>
+  <!-- ====================== MARQUEE ====================== -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span>Currently accepting new projects<span class="marquee-dot"></span></span>
+      <span>Based in Pune, India<span class="marquee-dot"></span></span>
+      <span>Built with AI, shipped in days<span class="marquee-dot"></span></span>
+      <span>Now booking May 2026<span class="marquee-dot"></span></span>
+      <span>Currently accepting new projects<span class="marquee-dot"></span></span>
+      <span>Based in Pune, India<span class="marquee-dot"></span></span>
+      <span>Built with AI, shipped in days<span class="marquee-dot"></span></span>
+      <span>Now booking May 2026<span class="marquee-dot"></span></span>
     </div>
   </div>
 
-  <!-- ============================================ -->
-  <!--  JAVASCRIPT SECTION — This controls BEHAVIOR  -->
-  <!--  Try changing what the functions do!           -->
-  <!-- ============================================ -->
+  <!-- ====================== NAV ====================== -->
+  <nav>
+    <div class="container nav-inner">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        HARRY / BUILDS
+      </div>
+      <div class="nav-links">
+        <a href="#work">Services</a>
+        <a href="#process">Process</a>
+        <a href="#about">About</a>
+      </div>
+      <a href="#contact" class="nav-contact">Let's talk →</a>
+    </div>
+  </nav>
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero" style="border-bottom: 2px solid var(--ink); padding-top: 80px;">
+    <div class="container">
+      <div class="hero-label">Independent studio / est. 2026</div>
+
+      <h1>
+        I build<br>
+        <span class="serif">AI-powered</span> tools,<br>
+        <span class="outlined">websites</span> &amp;<br>
+        automations.
+      </h1>
+
+      <div class="hero-sub">
+        <p>
+          For Indian founders and brands moving fast. No agencies. No bloated proposals. Just one builder shipping real products that make you money or save you time.
+        </p>
+        <div>
+          <p class="muted">
+            Websites in 72 hours. AI chatbots in a week. Custom agents built around your actual workflow — not someone else's template.
+          </p>
+          <div class="hero-cta-row">
+            <a href="#contact" class="btn btn-primary">
+              Start a project <span class="btn-arrow">↗</span>
+            </a>
+            <a href="#work" class="btn btn-ghost">
+              See what I build
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-strip">
+        <div class="stat">
+          <div class="stat-num">72h</div>
+          <div class="stat-label">Ship Time</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">₹15K+</div>
+          <div class="stat-label">Starting At</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1:1</div>
+          <div class="stat-label">No Middlemen</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">AI That Works</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== SERVICES ====================== -->
+  <section id="work">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">01 / Services</div>
+      </div>
+      <h2 class="section-title">
+        What I <span class="italic">actually</span> build.
+      </h2>
+      <p style="font-family: var(--font-mono); font-size: 14px; color: var(--muted); max-width: 640px; margin-top: 20px; margin-bottom: 60px; line-height: 1.7;">
+        Four things. Done well. Shipped fast. No scope creep, no surprise invoices, no corporate BS.
+      </p>
+
+      <div class="services-grid">
+
+        <!-- Service 1 -->
+        <div class="service">
+          <div class="service-top">
+            <div class="service-num">/ 01</div>
+            <div class="service-tag">3–7 days</div>
+          </div>
+          <h3>Business<br>Websites</h3>
+          <p class="service-desc">
+            Fast, modern, SEO-optimized sites that look like you spent lakhs. Built with Next.js, deployed on Vercel, mobile-perfect.
+          </p>
+          <ul class="service-list">
+            <li>Landing pages that convert</li>
+            <li>Multi-page brand sites</li>
+            <li>Portfolio + e-commerce starters</li>
+            <li>Custom animations &amp; motion</li>
+          </ul>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="service">
+          <div class="service-top">
+            <div class="service-num">/ 02</div>
+            <div class="service-tag">5–10 days</div>
+          </div>
+          <h3>AI<br>Chatbots</h3>
+          <p class="service-desc">
+            Customer support bots trained on your business data. Handle 80% of repeat queries without you touching your phone. Save hours every day.
+          </p>
+          <ul class="service-list">
+            <li>Website chat widgets</li>
+            <li>WhatsApp order bots</li>
+            <li>Trained on your docs &amp; FAQs</li>
+            <li>Hand-off to human when needed</li>
+          </ul>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="service">
+          <div class="service-top">
+            <div class="service-num">/ 03</div>
+            <div class="service-tag">4–8 days</div>
+          </div>
+          <h3>Automated<br>Workflows</h3>
+          <p class="service-desc">
+            Boring tasks done automatically. Competitor price tracking, daily reports, form-to-CRM pipelines, Telegram alerts — you sleep, they run.
+          </p>
+          <ul class="service-list">
+            <li>Competitor price trackers</li>
+            <li>Lead capture → notification systems</li>
+            <li>Scheduled reports &amp; summaries</li>
+            <li>Custom Telegram / email alerts</li>
+          </ul>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="service">
+          <div class="service-top">
+            <div class="service-num">/ 04</div>
+            <div class="service-tag">2–4 weeks</div>
+          </div>
+          <h3>Custom<br>AI Agents</h3>
+          <p class="service-desc">
+            Premium tier. AI that doesn't just answer — it decides and acts. Analyzes your Meta ads, generates content at scale, runs multi-step workflows on its own.
+          </p>
+          <ul class="service-list">
+            <li>Meta / Google Ads analyzers</li>
+            <li>Content generation at scale</li>
+            <li>Multi-step research agents</li>
+            <li>Integrations with your tools</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== PROCESS ====================== -->
+  <section id="process">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">02 / How it works</div>
+      </div>
+      <h2 class="section-title">
+        No meetings. No proposals.<br>
+        Just <span class="italic">shipping</span>.
+      </h2>
+
+      <div class="process-grid" style="margin-top: 60px;">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <h4>Talk / 30 min</h4>
+          <p>
+            You DM me. We jump on a quick call or WhatsApp chat. I figure out what you actually need — not what you think you need. Fixed price quoted that day.
+          </p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <h4>Build / days</h4>
+          <p>
+            50% upfront. I get to work. No daily check-ins, no Slack drama. You get preview links as things come alive. Revisions built into the price.
+          </p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <h4>Ship / live</h4>
+          <p>
+            Deployed to your domain. Walkthrough call so you know how everything works. 30 days free support. Then you own it forever.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ABOUT ====================== -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">03 / Who's behind this</div>
+      </div>
+
+      <div class="about-split">
+        <div class="about-left">
+          <p class="big-quote">
+            I'm <span class="accent">Harry</span> — a 20-year-old builder from Pune, India. I run a streetwear brand called Culture Kora and spend the rest of my time building AI-powered tools for other founders like me.
+          </p>
+        </div>
+        <div class="about-right">
+          <p class="body-copy">
+            No CS degree. No corporate experience. Just a lot of curiosity, a terminal, and the obsession to ship.
+          </p>
+          <p class="body-copy muted">
+            I'm betting on a simple idea: the next wave of great software won't come from big teams with long timelines. It'll come from individuals who can use AI to build in days what used to take months. That's the game. I'm playing it seriously.
+          </p>
+          <p class="body-copy muted">
+            If you're a founder trying to move fast without hiring a whole team — or you have a weird idea that a normal agency would charge ₹5L for — talk to me. I probably can do it in a week for a fraction.
+          </p>
+
+          <div class="tech-tags">
+            <div class="tech-tag">Next.js</div>
+            <div class="tech-tag">React</div>
+            <div class="tech-tag">Claude API</div>
+            <div class="tech-tag">Supabase</div>
+            <div class="tech-tag">Vercel</div>
+            <div class="tech-tag">Python</div>
+            <div class="tech-tag">Node.js</div>
+            <div class="tech-tag">MCP</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CONTACT ====================== -->
+  <section id="contact" class="contact-section">
+    <div class="container">
+      <div class="contact-label">04 / Let's build</div>
+      <h2 class="contact-headline">
+        Got an idea?<br>
+        <span class="outlined">Let's</span> <span class="italic">ship</span> it.
+      </h2>
+
+      <div class="contact-methods">
+        <a href="mailto:harshsingh2005in@gmail.com" class="contact-method">
+          <div class="contact-method-label">[A] Email</div>
+          <div class="contact-method-value">harshsingh2005in@gmail.com</div>
+          <div class="contact-method-arrow">Send a message →</div>
+        </a>
+        <a href="https://wa.me/918999229868" class="contact-method">
+          <div class="contact-method-label">[B] WhatsApp</div>
+          <div class="contact-method-value">Direct Chat</div>
+          <div class="contact-method-arrow">Faster replies →</div>
+        </a>
+        <a href="#" class="contact-method">
+          <div class="contact-method-label">[C] Socials</div>
+          <div class="contact-method-value">X / LinkedIn</div>
+          <div class="contact-method-arrow">Coming soon →</div>
+        </a>
+      </div>
+
+      <p style="font-family: var(--font-mono); font-size: 12px; color: rgba(242, 241, 236, 0.5); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 40px; text-align: center;">
+        ↑ Usually reply within 6 hours (India time) ↑
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== FOOTER ====================== -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="footer-text">© 2026 Harry Builds — All systems operational <span class="accent">●</span></div>
+      <div class="footer-text">Made with <span class="accent">♥</span> and too much chai / Pune, IN</div>
+    </div>
+  </footer>
+
   <script>
-    // --- COUNTER LOGIC ---
-    let count = 0;
+    // Tiny script — logs visits + adds keyboard nav for accessibility
+    console.log("%cHARRY / BUILDS", "font-family: monospace; font-size: 24px; font-weight: bold; color: #ff3b14;");
+    console.log("%cInterested in how this site was built? Let's talk.", "font-family: monospace; font-size: 12px;");
 
-    function changeCount(amount) {
-      count += amount;
-      document.getElementById("counter").textContent = count;
-      console.log("Counter is now:", count); // Open DevTools (F12) to see this!
-    }
-
-    function resetCount() {
-      count = 0;
-      document.getElementById("counter").textContent = count;
-      console.log("Counter reset!");
-    }
-
-    // --- BUTTON MESSAGE ---
-    function showMessage() {
-      const messages = [
-        "You built a real website! HTML + CSS + JS working together. 💪",
-        "Day 2 complete. You understand more than most people ever will.",
-        "This isn't a template — you understand every line. That's power.",
-        "From zero to website builder in 2 days. Keep going! 🔥",
-      ];
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById("message").textContent = randomMessage;
-
-      // TRY: Add your own messages to the array above!
-    }
-
-    // This runs when the page first loads
-    console.log("🟢 Page loaded! JavaScript is running.");
-    console.log("Open this console (F12 → Console tab) to see JS in action.");
+    // Smooth scroll enhancement for older browsers
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
   </script>
+
 </body>
 </html>
