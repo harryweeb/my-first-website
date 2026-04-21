@@ -6,15 +6,11 @@
   <title>Harry Builds — AI-powered tools, websites, and automations</title>
   <meta name="description" content="Independent studio building AI-powered websites, chatbots, and automations for Indian brands and founders. Built fast. Deployed faster." />
 
-  <!-- Fonts: pairing a brutalist display font with a refined mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
   <style>
-    /* ============================================
-       BRUTALIST DESIGN TOKENS
-       ============================================ */
     :root {
       --ink: #0a0a0a;
       --paper: #f2f1ec;
@@ -22,7 +18,6 @@
       --accent: #ff3b14;
       --muted: #6b6b68;
       --line: #0a0a0a;
-
       --font-display: "Archivo Black", sans-serif;
       --font-serif: "Instrument Serif", serif;
       --font-mono: "JetBrains Mono", monospace;
@@ -41,7 +36,6 @@
       cursor: default;
     }
 
-    /* Noise texture overlay for paper feel */
     body::before {
       content: "";
       position: fixed;
@@ -54,9 +48,6 @@
 
     ::selection { background: var(--accent); color: var(--paper); }
 
-    /* ============================================
-       GRID CONTAINER
-       ============================================ */
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -69,9 +60,6 @@
       .container { padding: 0 20px; }
     }
 
-    /* ============================================
-       TOP MARQUEE BAR
-       ============================================ */
     .marquee-bar {
       background: var(--ink);
       color: var(--paper);
@@ -113,9 +101,6 @@
       display: inline-block;
     }
 
-    /* ============================================
-       NAV
-       ============================================ */
     nav {
       padding: 24px 0;
       border-bottom: 1px solid var(--ink);
@@ -203,9 +188,6 @@
       .nav-links { display: none; }
     }
 
-    /* ============================================
-       HERO
-       ============================================ */
     .hero {
       padding: 80px 0 60px;
       border-bottom: 1px solid var(--ink);
@@ -330,7 +312,6 @@
       line-height: 1;
     }
 
-    /* Index/counter badge */
     .stat-strip {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -376,9 +357,6 @@
       margin-top: 10px;
     }
 
-    /* ============================================
-       SECTION HEADERS
-       ============================================ */
     section {
       padding: 100px 0;
       border-bottom: 1px solid var(--ink);
@@ -429,9 +407,6 @@
       color: var(--accent);
     }
 
-    /* ============================================
-       SERVICES GRID
-       ============================================ */
     .services-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -535,9 +510,6 @@
       flex-shrink: 0;
     }
 
-    /* ============================================
-       PROCESS SECTION
-       ============================================ */
     .process-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -587,9 +559,6 @@
       color: var(--muted);
     }
 
-    /* ============================================
-       ABOUT SECTION
-       ============================================ */
     .about-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -624,6 +593,38 @@
 
     .about-right .body-copy .muted { color: var(--muted); }
 
+    .credentials-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 20px 0;
+      margin: 24px 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+      flex-wrap: wrap;
+    }
+
+    .credential-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .credential-badge strong {
+      color: var(--ink);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .credential-divider {
+      color: var(--accent);
+      font-size: 18px;
+    }
+
     .tech-tags {
       display: flex;
       flex-wrap: wrap;
@@ -646,9 +647,6 @@
       color: var(--paper);
     }
 
-    /* ============================================
-       CONTACT SECTION
-       ============================================ */
     .contact-section {
       background: var(--ink);
       color: var(--paper);
@@ -758,9 +756,6 @@
       opacity: 0.6;
     }
 
-    /* ============================================
-       FOOTER
-       ============================================ */
     footer {
       background: var(--ink);
       color: var(--paper);
@@ -789,9 +784,6 @@
       opacity: 1;
     }
 
-    /* ============================================
-       ANIMATIONS
-       ============================================ */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(24px); }
       to { opacity: 1; transform: translateY(0); }
@@ -801,22 +793,11 @@
     .hero h1 { animation: fadeUp 0.8s ease-out 0.1s both; }
     .hero-sub { animation: fadeUp 0.6s ease-out 0.3s both; }
     .stat-strip { animation: fadeUp 0.6s ease-out 0.5s both; }
-
-    /* Floating arrows for decoration */
-    .corner-arrow {
-      position: absolute;
-      font-family: var(--font-mono);
-      font-size: 14px;
-      letter-spacing: 1px;
-      color: var(--accent);
-      text-transform: uppercase;
-    }
   </style>
 </head>
 
 <body>
 
-  <!-- ====================== MARQUEE ====================== -->
   <div class="marquee-bar">
     <div class="marquee-track">
       <span>Currently accepting new projects<span class="marquee-dot"></span></span>
@@ -830,7 +811,6 @@
     </div>
   </div>
 
-  <!-- ====================== NAV ====================== -->
   <nav>
     <div class="container nav-inner">
       <div class="logo">
@@ -846,7 +826,6 @@
     </div>
   </nav>
 
-  <!-- ====================== HERO ====================== -->
   <section class="hero" style="border-bottom: 2px solid var(--ink); padding-top: 80px;">
     <div class="container">
       <div class="hero-label">Independent studio / est. 2026</div>
@@ -898,7 +877,6 @@
     </div>
   </section>
 
-  <!-- ====================== SERVICES ====================== -->
   <section id="work">
     <div class="container">
       <div class="section-header">
@@ -913,7 +891,6 @@
 
       <div class="services-grid">
 
-        <!-- Service 1 -->
         <div class="service">
           <div class="service-top">
             <div class="service-num">/ 01</div>
@@ -931,7 +908,6 @@
           </ul>
         </div>
 
-        <!-- Service 2 -->
         <div class="service">
           <div class="service-top">
             <div class="service-num">/ 02</div>
@@ -949,7 +925,6 @@
           </ul>
         </div>
 
-        <!-- Service 3 -->
         <div class="service">
           <div class="service-top">
             <div class="service-num">/ 03</div>
@@ -967,7 +942,6 @@
           </ul>
         </div>
 
-        <!-- Service 4 -->
         <div class="service">
           <div class="service-top">
             <div class="service-num">/ 04</div>
@@ -988,7 +962,6 @@
     </div>
   </section>
 
-  <!-- ====================== PROCESS ====================== -->
   <section id="process">
     <div class="container">
       <div class="section-header">
@@ -1025,7 +998,6 @@
     </div>
   </section>
 
-  <!-- ====================== ABOUT ====================== -->
   <section id="about">
     <div class="container">
       <div class="section-header">
@@ -1035,13 +1007,26 @@
       <div class="about-split">
         <div class="about-left">
           <p class="big-quote">
-            I'm <span class="accent">Harry</span> — a 20-year-old builder from Pune, India. I run a streetwear brand called Culture Kora and spend the rest of my time building AI-powered tools for other founders like me.
+            I'm <span class="accent">Harry</span>. 20. Based in Pune. I build AI-powered tools, websites, and automations for founders who want to ship fast without hiring a team.
           </p>
         </div>
         <div class="about-right">
           <p class="body-copy">
             No CS degree. No corporate experience. Just a lot of curiosity, a terminal, and the obsession to ship.
           </p>
+
+          <div class="credentials-row">
+            <div class="credential-badge">
+              <strong>Data Analytics &amp; AI</strong>
+              Certified / IIM Mumbai
+            </div>
+            <span class="credential-divider">/</span>
+            <div class="credential-badge">
+              <strong>Independent Studio</strong>
+              Est. 2026 / Pune, IN
+            </div>
+          </div>
+
           <p class="body-copy muted">
             I'm betting on a simple idea: the next wave of great software won't come from big teams with long timelines. It'll come from individuals who can use AI to build in days what used to take months. That's the game. I'm playing it seriously.
           </p>
@@ -1064,7 +1049,6 @@
     </div>
   </section>
 
-  <!-- ====================== CONTACT ====================== -->
   <section id="contact" class="contact-section">
     <div class="container">
       <div class="contact-label">04 / Let's build</div>
@@ -1097,7 +1081,6 @@
     </div>
   </section>
 
-  <!-- ====================== FOOTER ====================== -->
   <footer>
     <div class="container footer-inner">
       <div class="footer-text">© 2026 Harry Builds — All systems operational <span class="accent">●</span></div>
@@ -1106,11 +1089,9 @@
   </footer>
 
   <script>
-    // Tiny script — logs visits + adds keyboard nav for accessibility
     console.log("%cHARRY / BUILDS", "font-family: monospace; font-size: 24px; font-weight: bold; color: #ff3b14;");
     console.log("%cInterested in how this site was built? Let's talk.", "font-family: monospace; font-size: 12px;");
 
-    // Smooth scroll enhancement for older browsers
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
         const target = document.querySelector(this.getAttribute('href'));
